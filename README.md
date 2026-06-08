@@ -1,5 +1,3 @@
-
-=======
 # Hi there 👋
 
 ## 💻 Develop Tech
@@ -13,16 +11,6 @@
 ![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)
 ![Photoshop](https://img.shields.io/badge/Photoshop-31A8FF?style=for-the-badge&logo=adobephotoshop&logoColor=white)
 
-
-# Portfolio Structure
-
-## Folder Guide
-
-- `index.html`: 전체 페이지 섹션 구조와 SEO 메타 태그
-- `css/reset.css`: 브라우저 기본 스타일 초기화
-- `css/common.css`: 공통 변수, 컨테이너, 버튼, 섹션 스타일
-- `css/style.css`: 페이지별 레이아웃과 반응형 스타일
-- `js/data.js`: WORK, PROJECT, SKILL 데이터 관리
 - `js/components.js`: 데이터 기반 카드 렌더링
 - `js/main.js`: 메뉴, 스크롤, AOS, GSAP 인터랙션
 - `images/about`: 프로필, 소개 영역 이미지
