@@ -7,7 +7,7 @@
 
   const createPlaceholder = (title) => {
     const encodedTitle = encodeURIComponent(title);
-    return `https://placehold.co/900x560/191c29/c8ff4d?text=${encodedTitle}`;
+    return `https://placehold.co/900x560/f0eefc/6d5dfc?text=${encodedTitle}`;
   };
 
   const renderSkills = () => {
@@ -47,33 +47,6 @@
       .join("");
   };
 
-  const renderProjects = () => {
-    const list = document.querySelector("[data-project-list]");
-
-    if (!list) {
-      return;
-    }
-
-    list.innerHTML = data.projects
-      .map(
-        (project) => `
-          <li class="project-card" data-aos="fade-up">
-            <a href="${project.url}" target="_blank" rel="noreferrer">
-              <div>
-                <h3>${project.title}</h3>
-                <p class="project-card__meta">${project.year}</p>
-              </div>
-              <p class="project-card__tags">
-                ${project.tags.map((tag) => `<span>#${tag}</span>`).join("")}
-              </p>
-            </a>
-          </li>
-        `
-      )
-      .join("");
-  };
-
   renderSkills();
   renderWorks();
-  renderProjects();
 })();

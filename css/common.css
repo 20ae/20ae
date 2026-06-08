@@ -1,17 +1,17 @@
 :root {
-  --color-bg: #080910;
-  --color-surface: #11131d;
-  --color-surface-light: #191c29;
-  --color-text: #f7f7fb;
-  --color-muted: #a9adbb;
-  --color-line: rgba(255, 255, 255, 0.12);
-  --color-primary: #c8ff4d;
-  --color-primary-soft: rgba(200, 255, 77, 0.16);
+  --color-bg: #f8f5ef;
+  --color-surface: #ffffff;
+  --color-surface-light: #f0eefc;
+  --color-text: #202232;
+  --color-muted: #6f7282;
+  --color-line: rgba(32, 34, 50, 0.12);
+  --color-primary: #6d5dfc;
+  --color-primary-soft: rgba(109, 93, 252, 0.12);
   --font-main: "Pretendard", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --container: 1180px;
   --radius-lg: 32px;
   --radius-md: 22px;
-  --shadow-card: 0 24px 80px rgba(0, 0, 0, 0.28);
+  --shadow-card: 0 24px 70px rgba(80, 74, 124, 0.14);
 }
 
 body {
@@ -69,7 +69,7 @@ body.menu-open {
   padding: 0 20px;
   border-radius: 999px;
   background: var(--color-primary);
-  color: #111;
+  color: #fff;
   font-size: 15px;
   font-weight: 800;
 }
@@ -91,7 +91,7 @@ body.menu-open {
   place-items: center;
   border: 1px solid var(--color-line);
   border-radius: 50%;
-  background: rgba(17, 19, 29, 0.75);
+  background: rgba(255, 255, 255, 0.82);
   color: var(--color-text);
   opacity: 0;
   transform: translateY(12px);

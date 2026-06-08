@@ -59,12 +59,22 @@
     }
   };
 
+  const resetScrollPosition = () => {
+    if (history.scrollRestoration) {
+      history.scrollRestoration = "manual";
+    }
+    window.scrollTo(0, 0);
+  };
+
   window.addEventListener("scroll", toggleScrolledState, { passive: true });
   window.addEventListener("resize", () => {
     if (window.innerWidth > 900) {
       closeMenu();
     }
   });
+
+  resetScrollPosition();
+  window.addEventListener("load", resetScrollPosition, { once: true });
 
   toggleScrolledState();
   initMenu();

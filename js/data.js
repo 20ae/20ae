@@ -41,30 +41,4 @@ window.PORTFOLIO_DATA = {
       alt: "문자팝 모바일 웹 썸네일",
     },
   ],
-  projects: [
-    {
-      title: "PANORAMA(3D)",
-      year: "2024",
-      tags: ["3D", "CSS", "JS", "인터랙티브"],
-      url: "#",
-    },
-    {
-      title: "MUSIC PLAYER",
-      year: "2024",
-      tags: ["3D", "CSS", "JS", "인터랙티브"],
-      url: "#",
-    },
-    {
-      title: "SORO",
-      year: "2024",
-      tags: ["GSAP", "Clone", "인터랙티브", "반응형"],
-      url: "#",
-    },
-    {
-      title: "Qude",
-      year: "2024",
-      tags: ["GSAP", "Clone", "인터랙션"],
-      url: "#",
-    },
-  ],
 };
