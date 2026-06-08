@@ -1,0 +1,117 @@
+:root {
+  --color-bg: #080910;
+  --color-surface: #11131d;
+  --color-surface-light: #191c29;
+  --color-text: #f7f7fb;
+  --color-muted: #a9adbb;
+  --color-line: rgba(255, 255, 255, 0.12);
+  --color-primary: #c8ff4d;
+  --color-primary-soft: rgba(200, 255, 77, 0.16);
+  --font-main: "Pretendard", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --container: 1180px;
+  --radius-lg: 32px;
+  --radius-md: 22px;
+  --shadow-card: 0 24px 80px rgba(0, 0, 0, 0.28);
+}
+
+body {
+  overflow-x: hidden;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-main);
+  font-size: 16px;
+  line-height: 1.65;
+  word-break: keep-all;
+}
+
+body.menu-open {
+  overflow: hidden;
+}
+
+.wrap {
+  min-height: 100vh;
+}
+
+.container {
+  width: min(100% - 40px, var(--container));
+  margin-inline: auto;
+}
+
+.section {
+  position: relative;
+  padding: 140px 0;
+}
+
+.section-title {
+  margin-bottom: 52px;
+}
+
+.section-title h2 {
+  max-width: 720px;
+  margin-top: 12px;
+  font-size: clamp(34px, 5vw, 64px);
+  line-height: 1.12;
+  letter-spacing: -0.05em;
+}
+
+.eyebrow {
+  color: var(--color-primary);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 20px;
+  border-radius: 999px;
+  background: var(--color-primary);
+  color: #111;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.button--ghost {
+  border: 1px solid var(--color-line);
+  background: transparent;
+  color: var(--color-text);
+}
+
+.return-top {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 40;
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border: 1px solid var(--color-line);
+  border-radius: 50%;
+  background: rgba(17, 19, 29, 0.75);
+  color: var(--color-text);
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  backdrop-filter: blur(16px);
+  pointer-events: none;
+}
+
+.return-top.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: min(100% - 24px, var(--container));
+  }
+
+  .section {
+    padding: 92px 0;
+  }
+}
