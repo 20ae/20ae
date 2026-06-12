@@ -8,6 +8,16 @@
   transition: background 0.2s ease, border-color 0.2s ease;
 }
 
+.scroll-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, #6d5dfc, #ff97d5);
+  transition: width 0.1s ease;
+}
+
 .site-header.is-scrolled {
   border-color: var(--color-line);
   background: rgba(248, 245, 239, 0.78);
@@ -60,6 +70,7 @@
 .hero {
   display: grid;
   min-height: 100vh;
+  padding-inline: 20px;
   padding-top: 180px;
   place-items: center;
   overflow: hidden;
@@ -118,14 +129,14 @@
 
 .about__grid {
   display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
-  gap: 44px;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
   align-items: center;
 }
 
 .about__visual {
   display: grid;
-  min-height: 420px;
+  min-height: 330px;
   place-items: center;
   border: 1px solid var(--color-line);
   border-radius: var(--radius-lg);
@@ -134,7 +145,7 @@
 }
 
 .about__visual img {
-  width: min(70%, 320px);
+  width: min(55%, 240px);
 }
 
 .about__content {
@@ -163,12 +174,12 @@
 .info-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+  gap: 30px;
   margin-top: 24px;
 }
 
 .info-card {
-  min-height: 220px;
+  height: 280px;
   padding: 32px;
   border: 1px solid var(--color-line);
   border-radius: var(--radius-md);
@@ -285,12 +296,12 @@
   padding: 84px 32px;
   border: 1px solid var(--color-line);
   border-radius: var(--radius-lg);
-  background: radial-gradient(circle at top, #f0eefc, var(--color-surface) 58%);
+  background: #ffffff;
 }
 
 .contact h2 {
   margin-top: 12px;
-  font-size: clamp(34px, 6vw, 76px);
+  font-size: clamp(28px, 5vw, 48px);
   line-height: 1.08;
   letter-spacing: -0.06em;
 }

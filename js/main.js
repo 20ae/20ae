@@ -3,12 +3,20 @@
   const menuButton = document.querySelector("[data-menu-button]");
   const siteNav = document.querySelector("[data-site-nav]");
   const returnTop = document.querySelector("[data-return-top]");
+  const scrollProgress = document.querySelector("[data-scroll-progress]");
   const heroBlurs = document.querySelectorAll(".hero__blur");
 
   const toggleScrolledState = () => {
     const isScrolled = window.scrollY > 20;
     header?.classList.toggle("is-scrolled", isScrolled);
     returnTop?.classList.toggle("is-visible", window.scrollY > 500);
+
+    // Update scroll progress bar
+    if (scrollProgress) {
+      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrolled = (window.scrollY / scrollHeight) * 100;
+      scrollProgress.style.width = scrolled + "%";
+    }
   };
 
   const closeMenu = () => {
