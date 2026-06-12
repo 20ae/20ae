@@ -1,15 +1,13 @@
 window.PORTFOLIO_DATA = {
   skills: [
-    "HTML",
-    "CSS",
-    "JavaScript",
-    "Figma",
-    "GSAP",
-    "AOS",
-    "jQuery",
-    "Photoshop",
-    "Illustrator",
-    "Bootstrap",
+    { name: "React", icon: "images/icon/react.png", iconType: "image" },
+    { name: "HTML5", icon: "images/icon/html5.png", iconType: "image" },
+    { name: "CSS3", icon: "images/icon/css3.png", iconType: "image" },
+    { name: "JavaScript", icon: "fa-brands fa-js", iconType: "font" },
+    { name: "TypeScript", icon: "images/icon/typeScript.png", iconType: "image" },
+    { name: "Illustrator", icon: "fa-brands fa-adobe", iconType: "font" },
+    { name: "GitHub", icon: "fa-brands fa-github", iconType: "font" },
+    { name: "SVN", icon: "fa-solid fa-code-branch", iconType: "font" },
   ],
   works: [
     {

@@ -196,16 +196,38 @@
 .skill-marquee__track {
   display: flex;
   width: max-content;
+  gap: 0;
+  align-items: center;
   animation: marquee 22s linear infinite;
 }
 
 .skill-chip {
-  padding: 22px 34px;
-  color: var(--color-muted);
-  font-size: 18px;
-  font-weight: 900;
-  letter-spacing: 0.02em;
+  display: inline-grid;
+  place-items: center;
+  width: 120px;
+  height: 120px;
+  background: transparent;
+  box-shadow: none;
+  color: inherit;
 }
+
+.skill-chip i {
+  font-size: 56px;
+}
+
+.skill-chip__img {
+  max-width: 56px;
+  max-height: 56px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Brand colors per skill name */
+.skill-chip[data-skill="JavaScript"] i { color: #F7DF1E; filter: drop-shadow(0 1px 0 rgba(0,0,0,0.1)); }
+.skill-chip[data-skill="Illustrator"] i { color: #FF9A00; }
+.skill-chip[data-skill="GitHub"] i { color: #181717; }
+.skill-chip[data-skill="SVN"] i { color: #F05032; }
 
 @keyframes marquee {
   to {

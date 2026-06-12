@@ -18,7 +18,17 @@
     }
 
     const skills = [...data.skills, ...data.skills];
-    track.innerHTML = skills.map((skill) => `<span class="skill-chip">${skill}</span>`).join("");
+    track.innerHTML = skills
+      .map((skill) => {
+        let iconHtml;
+        if (skill.iconType === "image") {
+          iconHtml = `<img src="${skill.icon}" alt="${skill.name}" class="skill-chip__img">`;
+        } else {
+          iconHtml = `<i class="${skill.icon}" aria-hidden="true"></i>`;
+        }
+        return `<span class="skill-chip" data-skill="${skill.name}" aria-label="${skill.name}">${iconHtml}</span>`;
+      })
+      .join("");
   };
 
   const renderWorks = () => {
