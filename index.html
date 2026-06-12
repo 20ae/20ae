@@ -18,29 +18,27 @@
     <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/style.css">
 
     <script src="https://kit.fontawesome.com/22ecdadb1a.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   </head>
   <body>
-    <div class="wrap">
-      <header class="site-header" data-header>
-        <div class="scroll-progress" data-scroll-progress></div>
-        <div class="container site-header__inner">
+    <div class="page">
+      <header class="site-header">
+        <div class="header-progress"></div>
+        <div class="container site-header_inner">
           <h2 class="site-logo">
             <a href="#main">Youngae's Web Portfolio</a>
           </h2>
-          <button class="menu-button" type="button" aria-label="메뉴 열기" aria-expanded="false" data-menu-button>
+          <button class="nav-toggle" type="button" aria-label="메뉴 열기" aria-expanded="false">
             <span></span>
             <span></span>
             <span></span>
           </button>
-          <nav class="site-nav" data-site-nav>
+          <nav class="site-nav">
             <a href="#about">ABOUT ME</a>
             <a href="#work">WORK</a>
             <a href="#contact">CONTACT</a>
@@ -50,89 +48,121 @@
 
       <main>
         <section id="main" class="hero section">
-          <div class="hero__bg" aria-hidden="true">
-            <span class="hero__blur"></span>
-            <span class="hero__blur"></span>
-            <span class="hero__blur"></span>
+          <div class="hero_background" aria-hidden="true">
+            <span class="hero_orb"></span>
+            <span class="hero_orb"></span>
+            <span class="hero_orb"></span>
           </div>
-          <div class="container hero__inner">
-            <p class="eyebrow">WEB PUBLISHER · FRONTEND DEVELOPER</p>
-            <h2 data-aos="fade-up" data-aos-delay="80">YOUNGAE'S<br>PORTFOLIO</h2>
-            <p class="hero__desc">
+          <div class="container hero_content">
+            <p class="section-label">WEB PUBLISHER · FRONTEND DEVELOPER</p>
+            <h1>YOUNGAE'S<br>PORTFOLIO</h1>
+            <p class="hero_description">
               안녕하세요. 웹 퍼블리싱과 프론트엔드 개발을 통해 사용자 중심의 웹 서비스를 만드는 이영애입니다.
-              사용자가 편리하게 이용할 수 있는 UI를 구현하고, 더 나은 웹 경험을 제공하기 위해 고민합니다
+              사용자가 편리하게 이용할 수 있는 UI를 구현하고, 더 나은 웹 경험을 제공하기 위해 고민합니다.
             </p>
           </div>
         </section>
 
         <section id="about" class="about section">
           <div class="container">
-            <div class="section-title" data-aos="fade-up">
-              <p class="eyebrow">ABOUT ME</p>
+            <div class="section-heading">
+              <p class="section-label">ABOUT ME</p>
             </div>
-            <div class="about__grid">
-              <figure class="about__visual">
+
+            <div class="about_layout">
+              <figure class="about_image">
                 <img src="images/about/profile.svg" alt="이영애 프로필 일러스트">
               </figure>
-              <div class="about__content">
-                <h3>Youngae Lee</h3>
+              <div class="about_text">
+                <h2>Youngae Lee</h2>
                 <p>
                   HTML, CSS, JavaScript, Figma를 활용해 웹사이트의 레이아웃과 인터랙션을 설계하고 구현합니다.
                   웹 표준과 접근성을 고려해 누구나 편하게 사용할 수 있는 페이지를 만드는 것을 중요하게 생각합니다.
                 </p>
-                <div class="about__actions">
+                <div class="about_links">
                   <a class="button" href="#" target="_blank" rel="noreferrer">자기소개 더보기</a>
-                  <a class="button button--ghost" href="#" target="_blank" rel="noreferrer">이력서 보기</a>
+                  <a class="button button_ghost" href="#" target="_blank" rel="noreferrer">이력서 보기</a>
                 </div>
               </div>
             </div>
 
-            <div class="info-grid">
-              <article class="info-card" data-aos="fade-up">
-                <h3>WORK EXPERIENCE</h3>
-                <ul>
-                  <li>2025.12 - NOW 필그림스센터</li>
-                  <li>2024.12 ~ 2025.12 (주)토브소프트</li>
-                </ul>
+            <div class="profile-timeline">
+              <article class="timeline">
+                <div class="timeline_title">
+                  <i class="fa-solid fa-briefcase" aria-hidden="true"></i>
+                  <h3>WORK EXPERIENCE</h3>
+                </div>
+                <ol class="timeline_list">
+                  <li class="timeline_item">
+                    <p class="timeline_date">2025.12 ~ NOW</p>
+                    <h4>필그림스센터</h4>
+                    <p class="timeline_role">프론트엔드</p>
+                    <p class="timeline_description">
+                      교육 플랫폼 유지보수 및 신규 페이지 퍼블리싱,<br>
+                      UI 개선 및 사용자 편의성 향상
+                    </p>
+                  </li>
+                  <li class="timeline_item">
+                    <p class="timeline_date">2024.12 ~ 2025.12</p>
+                    <h4>(주)토브소프트</h4>
+                    <p class="timeline_role">웹 퍼블리셔</p>
+                    <p class="timeline_description">
+                      웹사이트 및 관리자 페이지 퍼블리싱,<br>
+                      디자인 시스템 구축 및 UI/UX 개선
+                    </p>
+                  </li>
+                </ol>
               </article>
-              <article class="info-card" data-aos="fade-up" data-aos-delay="80">
-                <h3>EDUCATION</h3>
-                <ul>
-                  <li>2024.12 정보처리기사 - 한국산업입력공단</li>
-                  <li>2018.03 - 2023.02 덕성여자대학교 IT미디어학과 졸업</li>
-                </ul>
+
+              <article class="timeline">
+                <div class="timeline_title">
+                  <i class="fa-solid fa-graduation-cap" aria-hidden="true"></i>
+                  <h3>EDUCATION</h3>
+                </div>
+                <ol class="timeline_list">
+                  <li class="timeline_item">
+                    <p class="timeline_date">2024.12</p>
+                    <h4>정보처리기사</h4>
+                    <p class="timeline_role">한국산업인력공단</p>
+                  </li>
+                  <li class="timeline_item">
+                    <p class="timeline_date">2018.03 - 2023.02</p>
+                    <h4>덕성여자대학교</h4>
+                    <p class="timeline_role">IT미디어학과 졸업</p>
+                  </li>
+                </ol>
               </article>
             </div>
 
-            <div class="skill-marquee" aria-label="보유 기술">
-              <div class="skill-marquee__track" data-skill-track></div>
+            <div class="skills" aria-label="보유 기술">
+              <div class="skills_track"></div>
             </div>
           </div>
         </section>
 
         <section id="work" class="work section">
           <div class="container">
-            <div class="section-title" data-aos="fade-up">
-              <p class="eyebrow">WORK</p>
+            <div class="section-heading">
+              <p class="section-label">WORK</p>
             </div>
-            <ul class="card-grid" data-work-list></ul>
+            <ul class="works_grid"></ul>
           </div>
         </section>
 
         <section id="contact" class="contact section">
-          <div class="container contact__inner" data-aos="fade-up">
-            <p class="eyebrow">CONTACT</p>
+          <div class="container contact_inner">
+            <p class="section-label">CONTACT</p>
             <h2>함께 일할 웹 퍼블리셔를 찾고 계신가요?</h2>
-            <a class="contact__mail" href="mailto:aeyoung9918@gmail.com">aeyoung9918@gmail.com</a>
+            <a class="contact_mail" href="mailto:aeyoung9918@gmail.com">aeyoung9918@gmail.com</a>
             <p>궁금한 점이 있으시다면 편하게 연락해 주세요.</p>
           </div>
         </section>
       </main>
 
       <footer class="site-footer">
-        <div class="container site-footer__inner">
+        <div class="container site-footer_inner">
           <p>© 2026 Youngae-lee.com</p>
-          <div class="site-footer__links">
+          <div class="site-footer_links">
             <a href="#" target="_blank" rel="noreferrer">RESUME</a>
             <a href="#" target="_blank" rel="noreferrer">BLOG</a>
             <a href="#" target="_blank" rel="noreferrer">GITHUB</a>
@@ -140,7 +170,7 @@
         </div>
       </footer>
 
-      <button class="return-top" type="button" aria-label="맨 위로 이동" data-return-top>
+      <button class="return-top" type="button" aria-label="맨 위로 이동">
         <i class="fa-solid fa-arrow-up-long" aria-hidden="true"></i>
       </button>
     </div>

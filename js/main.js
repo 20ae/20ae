@@ -1,17 +1,16 @@
 (function () {
-  const header = document.querySelector("[data-header]");
-  const menuButton = document.querySelector("[data-menu-button]");
-  const siteNav = document.querySelector("[data-site-nav]");
-  const returnTop = document.querySelector("[data-return-top]");
-  const scrollProgress = document.querySelector("[data-scroll-progress]");
-  const heroBlurs = document.querySelectorAll(".hero__blur");
+  const header = document.querySelector(".site-header");
+  const navToggle = document.querySelector(".nav-toggle");
+  const siteNav = document.querySelector(".site-nav");
+  const returnTop = document.querySelector(".return-top");
+  const scrollProgress = document.querySelector(".header-progress");
+  const heroOrbs = document.querySelectorAll(".hero_orb");
 
-  const toggleScrolledState = () => {
+  const updateScrollState = () => {
     const isScrolled = window.scrollY > 20;
     header?.classList.toggle("is-scrolled", isScrolled);
     returnTop?.classList.toggle("is-visible", window.scrollY > 500);
 
-    // Update scroll progress bar
     if (scrollProgress) {
       const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
       const scrolled = (window.scrollY / scrollHeight) * 100;
@@ -20,16 +19,16 @@
   };
 
   const closeMenu = () => {
-    document.body.classList.remove("menu-open");
+    document.body.classList.remove("is-menu-open");
     siteNav?.classList.remove("is-open");
-    menuButton?.setAttribute("aria-expanded", "false");
+    navToggle?.setAttribute("aria-expanded", "false");
   };
 
   const initMenu = () => {
-    menuButton?.addEventListener("click", () => {
+    navToggle?.addEventListener("click", () => {
       const isOpen = siteNav?.classList.toggle("is-open");
-      document.body.classList.toggle("menu-open", Boolean(isOpen));
-      menuButton.setAttribute("aria-expanded", String(Boolean(isOpen)));
+      document.body.classList.toggle("is-menu-open", Boolean(isOpen));
+      navToggle.setAttribute("aria-expanded", String(Boolean(isOpen)));
     });
 
     siteNav?.querySelectorAll("a").forEach((link) => {
@@ -44,17 +43,9 @@
   };
 
   const initAnimations = () => {
-    if (window.AOS) {
-      window.AOS.init({
-        duration: 800,
-        once: true,
-        offset: 80,
-      });
-    }
-
-    if (window.gsap && heroBlurs.length) {
-      heroBlurs.forEach((blur, index) => {
-        window.gsap.to(blur, {
+    if (window.gsap && heroOrbs.length) {
+      heroOrbs.forEach((orb, index) => {
+        window.gsap.to(orb, {
           x: index % 2 === 0 ? 80 : -80,
           y: index % 2 === 0 ? -50 : 50,
           rotation: index % 2 === 0 ? 60 : -60,
@@ -74,7 +65,7 @@
     window.scrollTo(0, 0);
   };
 
-  window.addEventListener("scroll", toggleScrolledState, { passive: true });
+  window.addEventListener("scroll", updateScrollState, { passive: true });
   window.addEventListener("resize", () => {
     if (window.innerWidth > 900) {
       closeMenu();
@@ -84,7 +75,7 @@
   resetScrollPosition();
   window.addEventListener("load", resetScrollPosition, { once: true });
 
-  toggleScrolledState();
+  updateScrollState();
   initMenu();
   initReturnTop();
   initAnimations();
