@@ -4,7 +4,10 @@
   const siteNav = document.querySelector(".site-nav");
   const returnTop = document.querySelector(".return-top");
   const scrollProgress = document.querySelector(".header-progress");
+  const hero = document.querySelector(".hero");
+  const heroBackground = document.querySelector(".hero_background");
   const heroOrbs = document.querySelectorAll(".hero_orb");
+  let lastTrailTime = 0;
 
   const updateScrollState = () => {
     const isScrolled = window.scrollY > 20;
@@ -58,6 +61,28 @@
     }
   };
 
+  const initHeroAurora = () => {
+    if (!hero || !heroBackground) return;
+
+    hero.addEventListener("pointermove", (event) => {
+      const now = window.performance.now();
+
+      if (now - lastTrailTime < 70) return;
+
+      lastTrailTime = now;
+
+      const rect = hero.getBoundingClientRect();
+      const trail = document.createElement("span");
+
+      trail.className = "hero_aurora-trail";
+      trail.style.setProperty("--trail-x", event.clientX - rect.left + "px");
+      trail.style.setProperty("--trail-y", event.clientY - rect.top + "px");
+
+      heroBackground.appendChild(trail);
+      trail.addEventListener("animationend", () => trail.remove(), { once: true });
+    });
+  };
+
   const resetScrollPosition = () => {
     if (history.scrollRestoration) {
       history.scrollRestoration = "manual";
@@ -79,4 +104,5 @@
   initMenu();
   initReturnTop();
   initAnimations();
+  initHeroAurora();
 })();
