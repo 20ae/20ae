@@ -16,6 +16,10 @@
   color: rgba(255, 255, 255, 0.9);
 }
 
+.site-header:not(.is-scrolled) .site-nav.is-open{
+  color: var(--color-muted);
+}
+
 .site-header:not(.is-scrolled) .nav-toggle span {
   background: #fff;
 }
