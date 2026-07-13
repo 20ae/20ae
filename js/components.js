@@ -22,7 +22,7 @@
 
   const createPlaceholder = (title) => {
     const encodedTitle = encodeURIComponent(title);
-    return `https://placehold.co/900x560/f0eefc/6d5dfc?text=${encodedTitle}`;
+    return `https://placehold.co/900x560/efe8db/6a4e3a?text=${encodedTitle}`;
   };
 
   const toClassName = (value) => {

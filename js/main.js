@@ -2,14 +2,14 @@
   const header = document.querySelector(".site-header");
   const navToggle = document.querySelector(".nav-toggle");
   const siteNav = document.querySelector(".site-nav");
+  const siteLogoLink = document.querySelector(".site-logo a");
   const returnTop = document.querySelector(".return-top");
   const scrollProgress = document.querySelector(".header-progress");
-  const hero = document.querySelector(".hero");
-  const heroBackground = document.querySelector(".hero_background");
   const heroOrbs = document.querySelectorAll(".hero_orb");
   const heroRevealTexts = document.querySelectorAll(".hero_reveal_text");
   const aboutSection = document.querySelector("#about");
-  const aboutImageStage = document.querySelector(".about_image_stage");
+  const projectSection = document.querySelector("#project");
+  const contactSection = document.querySelector("#contact");
   const aboutRevealTargets = [
     document.querySelector(".about_image"),
     document.querySelector(".about_text h2"),
@@ -18,13 +18,16 @@
   ].filter(Boolean);
   const profileTimeline = document.querySelector(".profile-timeline");
   const timelinePanels = profileTimeline?.querySelectorAll(".timeline") || [];
-
-  const AURORA_TRAIL_INTERVAL_MS = 70;
-  const HEART_BURST_INTERVAL_MS = 2600;
-  const HEART_BURST_COUNT = 12;
-  const HEART_COLORS = ["#e85d8f", "#ff6b9d", "#f472b6", "#fb7185", "#ec4899", "#f9a8d4"];
-
-  let lastTrailTime = 0;
+  const projectRevealTargets = [
+    document.querySelector("#project .section-heading"),
+    document.querySelector(".works_grid"),
+  ].filter(Boolean);
+  const contactRevealTargets = [
+    document.querySelector(".contact_inner .section-label"),
+    document.querySelector(".contact_inner h2"),
+    document.querySelector(".contact_mail"),
+    document.querySelector(".contact_inner p:last-child"),
+  ].filter(Boolean);
 
   const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -46,6 +49,148 @@
     navToggle?.setAttribute("aria-expanded", "false");
   };
 
+  const playHeroIntro = () => {
+    if (!heroRevealTexts.length || !window.gsap) return;
+
+    if (prefersReducedMotion()) {
+      window.gsap.set(heroRevealTexts, { clearProps: "all" });
+      return;
+    }
+
+    window.gsap.killTweensOf(heroRevealTexts);
+    window.gsap.set(heroRevealTexts, {
+      yPercent: 110,
+      autoAlpha: 0,
+    });
+
+    window.gsap.to(heroRevealTexts, {
+      yPercent: 0,
+      autoAlpha: 1,
+      duration: 0.9,
+      ease: "power3.out",
+      stagger: 0.18,
+      delay: 0.08,
+    });
+  };
+
+  const createRevealController = (section, targets, options = {}) => {
+    const {
+      fromX = 0,
+      fromY = 0,
+      duration = 0.88,
+      stagger = 0.14,
+      threshold = 0.25,
+      rootMargin = "0px",
+    } = options;
+    let hasPlayed = false;
+
+    if (!section || !targets.length || !window.gsap) {
+      return { play: () => {}, observe: () => {} };
+    }
+
+    if (prefersReducedMotion()) {
+      window.gsap.set(targets, { clearProps: "all" });
+      return { play: () => {}, observe: () => {} };
+    }
+
+    window.gsap.set(targets, {
+      x: fromX,
+      y: fromY,
+      autoAlpha: 0,
+    });
+
+    const play = () => {
+      window.gsap.killTweensOf(targets);
+      window.gsap.fromTo(
+        targets,
+        { x: fromX, y: fromY, autoAlpha: 0 },
+        {
+          x: 0,
+          y: 0,
+          autoAlpha: 1,
+          duration,
+          ease: "power3.out",
+          stagger,
+          overwrite: true,
+        }
+      );
+      hasPlayed = true;
+    };
+
+    const observe = () => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting || hasPlayed) return;
+            play();
+          });
+        },
+        { threshold, rootMargin }
+      );
+
+      observer.observe(section);
+    };
+
+    return { play, observe };
+  };
+
+  const aboutReveal = createRevealController(aboutSection, aboutRevealTargets, {
+    fromX: -56,
+    duration: 0.88,
+    stagger: 0.14,
+    threshold: 0.25,
+  });
+
+  const timelineReveal = createRevealController(profileTimeline, [...timelinePanels], {
+    fromX: -48,
+    duration: 0.85,
+    stagger: 0.22,
+    threshold: 0.28,
+  });
+
+  const projectReveal = createRevealController(
+    document.querySelector("#project .section-heading") || projectSection,
+    projectRevealTargets,
+    {
+      fromY: -48,
+      duration: 0.7,
+      stagger: 0.12,
+      threshold: 0.05,
+      rootMargin: "0px 0px 18% 0px",
+    }
+  );
+
+  const contactReveal = createRevealController(contactSection, contactRevealTargets, {
+    fromX: -36,
+    duration: 0.75,
+    stagger: 0.12,
+    threshold: 0.2,
+  });
+
+  const replaySection = (hash) => {
+    window.setTimeout(() => {
+      if (hash === "#main") {
+        playHeroIntro();
+        return;
+      }
+
+      if (hash === "#about") {
+        aboutReveal.play();
+        timelineReveal.play();
+        return;
+      }
+
+      if (hash === "#project") {
+        projectReveal.play();
+        return;
+      }
+
+      if (hash === "#contact") {
+        contactReveal.play();
+      }
+    }, 120);
+  };
+
   const initMenu = () => {
     navToggle?.addEventListener("click", () => {
       const isOpen = siteNav?.classList.toggle("is-open");
@@ -54,13 +199,22 @@
     });
 
     siteNav?.querySelectorAll("a").forEach((link) => {
-      link.addEventListener("click", closeMenu);
+      link.addEventListener("click", () => {
+        closeMenu();
+        replaySection(link.getAttribute("href"));
+      });
+    });
+
+    siteLogoLink?.addEventListener("click", () => {
+      closeMenu();
+      replaySection("#main");
     });
   };
 
   const initReturnTop = () => {
     returnTop?.addEventListener("click", () => {
       window.scrollTo({ top: 0, behavior: "smooth" });
+      replaySection("#main");
     });
   };
 
@@ -78,144 +232,6 @@
         ease: "sine.inOut",
       });
     });
-  };
-
-  const initHeroIntro = () => {
-    if (!heroRevealTexts.length || !window.gsap) return;
-
-    if (prefersReducedMotion()) {
-      window.gsap.set(heroRevealTexts, { clearProps: "all" });
-      return;
-    }
-
-    window.gsap.set(heroRevealTexts, {
-      yPercent: 110,
-      autoAlpha: 0,
-    });
-
-    window.gsap.to(heroRevealTexts, {
-      yPercent: 0,
-      autoAlpha: 1,
-      duration: 0.9,
-      ease: "power3.out",
-      stagger: 0.18,
-      delay: 0.15,
-    });
-  };
-
-  const initHeroAurora = () => {
-    if (!hero || !heroBackground) return;
-
-    hero.addEventListener("pointermove", (event) => {
-      const now = window.performance.now();
-
-      if (now - lastTrailTime < AURORA_TRAIL_INTERVAL_MS) return;
-
-      lastTrailTime = now;
-
-      const rect = hero.getBoundingClientRect();
-      const trail = document.createElement("span");
-
-      trail.className = "hero_aurora-trail";
-      trail.style.setProperty("--trail-x", `${event.clientX - rect.left}px`);
-      trail.style.setProperty("--trail-y", `${event.clientY - rect.top}px`);
-
-      heroBackground.appendChild(trail);
-      trail.addEventListener("animationend", () => trail.remove(), { once: true });
-    });
-  };
-
-  const initScrollReveal = (section, targets, options = {}) => {
-    if (!section || !targets.length || !window.gsap) return;
-
-    const { fromX = -56, duration = 0.88, stagger = 0.14, threshold = 0.25 } = options;
-
-    if (prefersReducedMotion()) {
-      window.gsap.set(targets, { clearProps: "all" });
-      return;
-    }
-
-    window.gsap.set(targets, {
-      x: fromX,
-      autoAlpha: 0,
-    });
-
-    const observer = new IntersectionObserver(
-      (entries, obs) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-
-          window.gsap.to(targets, {
-            x: 0,
-            autoAlpha: 1,
-            duration,
-            ease: "power3.out",
-            stagger,
-          });
-
-          obs.unobserve(entry.target);
-        });
-      },
-      { threshold }
-    );
-
-    observer.observe(section);
-  };
-
-  const initProfileHeartBurst = () => {
-    if (!aboutImageStage || !aboutSection || prefersReducedMotion()) return;
-
-    let burstTimer = null;
-
-    const burstHearts = () => {
-      for (let i = 0; i < HEART_BURST_COUNT; i += 1) {
-        const heart = document.createElement("span");
-        const angle = (Math.PI * 2 * i) / HEART_BURST_COUNT + (Math.random() - 0.5) * 0.45;
-        const distance = 72 + Math.random() * 88;
-
-        heart.className = "about_heart";
-        heart.setAttribute("aria-hidden", "true");
-        heart.textContent = "♥";
-        heart.style.setProperty("--tx", `${Math.cos(angle) * distance}px`);
-        heart.style.setProperty("--ty", `${Math.sin(angle) * distance}px`);
-        heart.style.setProperty("--size", `${12 + Math.random() * 14}px`);
-        heart.style.setProperty("--duration", `${1.1 + Math.random() * 0.7}s`);
-        heart.style.setProperty("--rotate", `${-30 + Math.random() * 60}deg`);
-        heart.style.setProperty("--heart-color", HEART_COLORS[Math.floor(Math.random() * HEART_COLORS.length)]);
-
-        aboutImageStage.appendChild(heart);
-        heart.addEventListener("animationend", () => heart.remove(), { once: true });
-      }
-    };
-
-    const startBurst = () => {
-      if (burstTimer) return;
-
-      burstHearts();
-      burstTimer = window.setInterval(burstHearts, HEART_BURST_INTERVAL_MS);
-    };
-
-    const stopBurst = () => {
-      if (!burstTimer) return;
-
-      window.clearInterval(burstTimer);
-      burstTimer = null;
-    };
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            startBurst();
-          } else {
-            stopBurst();
-          }
-        });
-      },
-      { threshold: 0.15 }
-    );
-
-    observer.observe(aboutSection);
   };
 
   const resetScrollPosition = () => {
@@ -239,19 +255,9 @@
   initMenu();
   initReturnTop();
   initAnimations();
-  initHeroIntro();
-  initHeroAurora();
-  initScrollReveal(aboutSection, aboutRevealTargets, {
-    fromX: -56,
-    duration: 0.88,
-    stagger: 0.14,
-    threshold: 0.25,
-  });
-  initScrollReveal(profileTimeline, timelinePanels, {
-    fromX: -48,
-    duration: 0.85,
-    stagger: 0.22,
-    threshold: 0.28,
-  });
-  initProfileHeartBurst();
+  playHeroIntro();
+  aboutReveal.observe();
+  timelineReveal.observe();
+  projectReveal.observe();
+  contactReveal.observe();
 })();

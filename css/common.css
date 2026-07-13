@@ -1,19 +1,44 @@
 :root {
-  --color-bg: #f8f5ef;
-  --color-surface: #ffffff;
-  --color-surface-light: #f0eefc;
-  --color-text: #202232;
-  --color-muted: #6f7282;
-  --color-line: rgba(32, 34, 50, 0.12);
-  --color-primary: #884783;
-  --color-primary-soft: rgba(136, 71, 131, 0.12);
-  --color-accent: #ff97d5;
+  --color-bg: #f6f1e8;
+  --color-surface: #fffcf7;
+  --color-surface-light: #efe8db;
+  --color-text: #2f271f;
+  --color-muted: #74685c;
+  --color-line: rgba(47, 39, 31, 0.12);
+  --color-primary: #6a4e3a;
+  --color-primary-soft: rgba(106, 78, 58, 0.12);
+  --color-accent: #2b4532;
   --font-main: "Pretendard", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-logo: "Inter", "Inter Local", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --container: 1180px;
   --page-padding: 10px;
   --radius-lg: 32px;
   --radius-md: 22px;
-  --shadow-card: 0 24px 70px rgba(80, 74, 124, 0.14);
+  --shadow-card: 0 24px 70px rgba(74, 58, 42, 0.1);
+}
+
+@font-face {
+  font-family: "Inter Local";
+  src: url("../font/inter-28pt-regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter Local";
+  src: url("../font/inter-28pt-medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter Local";
+  src: url("../font/inter-28pt-bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
 }
 
 body {
@@ -58,7 +83,7 @@ body.is-menu-open {
 }
 
 .section-label {
-  color: var(--color-primary);
+  color: var(--color-accent);
   font-size: 14px;
   font-weight: 800;
   letter-spacing: 0.16em;
@@ -80,7 +105,7 @@ body.is-menu-open {
 
 .button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 22px rgba(136, 71, 131, 0.26);
+  box-shadow: 0 10px 22px rgba(106, 78, 58, 0.24);
   filter: brightness(1.04);
 }
 
