@@ -13,7 +13,7 @@
   const aboutRevealTargets = [
     document.querySelector(".about_image"),
     document.querySelector(".about_text h2"),
-    document.querySelector(".about_text p"),
+    ...document.querySelectorAll(".about_text p"),
     document.querySelector(".about_links"),
   ].filter(Boolean);
   const profileTimeline = document.querySelector(".profile-timeline");
