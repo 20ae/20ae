@@ -13,6 +13,7 @@
   --font-logo: var(--font-display);
   --container: 1180px;
   --page-padding: 10px;
+  --header-height: 76px;
   --radius-lg: 0;
   --radius-md: 0;
   --shadow-card: 0 18px 50px rgba(44, 36, 34, 0.08);
@@ -68,7 +69,7 @@ body.is-menu-open {
 
 .section {
   position: relative;
-  padding: 140px 0;
+  padding: 100px 0;
 }
 
 .section-heading {

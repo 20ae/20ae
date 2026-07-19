@@ -43,6 +43,7 @@
             <span></span>
           </button>
           <nav class="site-nav">
+            <a href="#main">HOME</a>
             <a href="#about">ABOUT ME</a>
             <a href="#skill">SKILL</a>
             <a href="#project">PROJECT</a>
@@ -149,18 +150,21 @@
           </div>
         </section>
 
-        <section id="skill" class="skill section">
-          <div class="container">
-            <div class="section-heading skill_heading">
-              <p class="section-label">SKILL</p>
-              <p class="skill_lead">아이콘을 클릭하면 각 기술에 대한 설명을 확인할 수 있습니다.</p>
-            </div>
+        <section id="skill" class="skill section skill-pin">
+          <div class="skill-pin_track">
+            <div class="skill-pin_sticky">
+              <div class="container">
+                <div class="section-heading">
+                  <p class="section-label">SKILL</p>
+                </div>
 
-            <div class="skills">
-              <ul class="skills_grid"></ul>
-              <div class="skills_tip" role="status" aria-live="polite" hidden>
-                <strong class="skills_tip_name"></strong>
-                <p class="skills_tip_desc"></p>
+                <div class="skills">
+                  <ul class="skills_grid"></ul>
+                  <aside class="skills_panel" aria-live="polite">
+                    <strong class="skills_tip_name"></strong>
+                    <p class="skills_tip_desc"></p>
+                  </aside>
+                </div>
               </div>
             </div>
           </div>

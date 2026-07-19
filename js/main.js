@@ -21,6 +21,7 @@
   const skillRevealTargets = [
     document.querySelector("#skill .section-heading"),
     document.querySelector(".skills_grid"),
+    document.querySelector(".skills_panel"),
   ].filter(Boolean);
   const projectRevealTargets = [
     document.querySelector("#project .section-heading"),

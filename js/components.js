@@ -6,9 +6,10 @@
   }
 
   const skillsSection = document.querySelector(".skills");
-  const skillsTip = document.querySelector(".skills_tip");
+  const skillsPanel = document.querySelector(".skills_panel");
   const skillsTipName = document.querySelector(".skills_tip_name");
   const skillsTipDesc = document.querySelector(".skills_tip_desc");
+  const skillPinTrack = document.querySelector(".skill-pin_track");
   const projectModal = document.querySelector(".project-modal");
   const projectModalTitle = document.querySelector(".project-modal_title");
   const projectModalFrame = document.querySelector(".project-modal_frame");
@@ -18,7 +19,12 @@
   const projectModalBackdrop = document.querySelector(".project-modal_backdrop");
   const MODAL_FALLBACK_DELAY_MS = 1600;
   let activeSkillName = null;
+  let activeSkillIndex = -1;
   let modalFallbackTimer = null;
+  let skillScrollLock = false;
+  let skillScrollLockTimer = null;
+  let skillPanelAnimTimer = null;
+  let skillScrollRaf = 0;
 
   const createPlaceholder = (title) => {
     const encodedTitle = encodeURIComponent(title);
@@ -41,28 +47,100 @@
     return /notion\.(com|so)/i.test(url);
   };
 
-  const hideSkillTip = () => {
-    if (!skillsTip) return;
+  const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    skillsTip.hidden = true;
-    activeSkillName = null;
-    skillsSection?.querySelectorAll(".skills_item.is-active").forEach((item) => {
-      item.classList.remove("is-active");
+  const getSkillButtons = () => {
+    return [...(skillsSection?.querySelectorAll(".skills_item") || [])];
+  };
+
+  const setSkillButtonsState = (activeButton) => {
+    getSkillButtons().forEach((item) => {
+      const isActive = item === activeButton;
+      item.classList.toggle("is-active", isActive);
+      item.setAttribute("aria-pressed", isActive ? "true" : "false");
     });
   };
 
-  const updateSkillTip = (button) => {
-    if (!skillsTip || !skillsTipName || !skillsTipDesc) return;
+  const updateSkillTip = (button, { animate = true } = {}) => {
+    if (!skillsPanel || !skillsTipName || !skillsTipDesc || !button) return;
 
-    skillsSection?.querySelectorAll(".skills_item.is-active").forEach((item) => {
-      item.classList.remove("is-active");
+    const nextName = button.dataset.skillName;
+    const nextDesc = button.dataset.skillDesc;
+    const buttons = getSkillButtons();
+    const nextIndex = buttons.indexOf(button);
+
+    if (nextName === activeSkillName && nextIndex === activeSkillIndex) {
+      setSkillButtonsState(button);
+      return;
+    }
+
+    setSkillButtonsState(button);
+    activeSkillName = nextName;
+    activeSkillIndex = nextIndex;
+    skillsPanel.classList.add("is-ready");
+
+    const applyContent = () => {
+      skillsTipName.textContent = nextName;
+      skillsTipDesc.textContent = nextDesc;
+      skillsPanel.classList.remove("is-updating");
+    };
+
+    if (!animate || prefersReducedMotion()) {
+      applyContent();
+      return;
+    }
+
+    clearTimeout(skillPanelAnimTimer);
+    skillsPanel.classList.add("is-updating");
+    skillPanelAnimTimer = window.setTimeout(applyContent, 120);
+  };
+
+  const getSkillTrackMetrics = () => {
+    if (!skillPinTrack) return null;
+
+    const trackTop = skillPinTrack.getBoundingClientRect().top + window.scrollY;
+    const trackHeight = skillPinTrack.offsetHeight;
+    const viewportHeight = window.innerHeight;
+    const scrollable = Math.max(trackHeight - viewportHeight, 1);
+
+    return { trackTop, scrollable };
+  };
+
+  const getScrollYForSkillIndex = (index, count) => {
+    const metrics = getSkillTrackMetrics();
+    if (!metrics || count <= 0) return window.scrollY;
+
+    const progress = count === 1 ? 0 : (index + 0.5) / count;
+    return metrics.trackTop + metrics.scrollable * progress;
+  };
+
+  const getSkillIndexFromScroll = (count) => {
+    const metrics = getSkillTrackMetrics();
+    if (!metrics || count <= 0) return 0;
+
+    const scrolled = Math.min(metrics.scrollable, Math.max(0, window.scrollY - metrics.trackTop));
+    const progress = scrolled / metrics.scrollable;
+    return Math.min(count - 1, Math.floor(progress * count));
+  };
+
+  const selectSkillByIndex = (index, { syncScroll = false } = {}) => {
+    const buttons = getSkillButtons();
+    const button = buttons[index];
+    if (!button) return;
+
+    updateSkillTip(button);
+
+    if (!syncScroll || !skillPinTrack || prefersReducedMotion()) return;
+
+    skillScrollLock = true;
+    clearTimeout(skillScrollLockTimer);
+    window.scrollTo({
+      top: getScrollYForSkillIndex(index, buttons.length),
+      behavior: "smooth",
     });
-
-    button.classList.add("is-active");
-    skillsTipName.textContent = button.dataset.skillName;
-    skillsTipDesc.textContent = button.dataset.skillDesc;
-    skillsTip.hidden = false;
-    activeSkillName = button.dataset.skillName;
+    skillScrollLockTimer = window.setTimeout(() => {
+      skillScrollLock = false;
+    }, 700);
   };
 
   const createSkillItem = (skill) => {
@@ -77,7 +155,8 @@
           class="skills_item skills_item_${toClassName(skill.name)}"
           data-skill-name="${escapeAttr(skill.name)}"
           data-skill-desc="${escapeAttr(skill.description)}"
-          aria-label="${escapeAttr(skill.name)} 설명 보기"
+          aria-pressed="false"
+          aria-label="${escapeAttr(skill.name)}"
         >
           <span class="skills_item_icon">${iconHtml}</span>
           <span class="skills_item_name">${escapeAttr(skill.name)}</span>
@@ -95,12 +174,47 @@
 
     grid.innerHTML = data.skills.map(createSkillItem).join("");
 
-    if (activeSkillName) {
-      const activeButton = grid.querySelector(`.skills_item[data-skill-name="${CSS.escape(activeSkillName)}"]`);
-      if (activeButton) {
-        updateSkillTip(activeButton);
-      }
+    if (skillPinTrack) {
+      skillPinTrack.style.setProperty("--skill-count", String(data.skills.length));
     }
+
+    const preferred =
+      (activeSkillName &&
+        grid.querySelector(`.skills_item[data-skill-name="${CSS.escape(activeSkillName)}"]`)) ||
+      grid.querySelector(".skills_item");
+
+    if (preferred) {
+      updateSkillTip(preferred, { animate: false });
+    }
+  };
+
+  const initSkillScrollPin = () => {
+    if (!skillPinTrack || !skillsSection) return;
+
+    const syncFromScroll = () => {
+      if (skillScrollLock || prefersReducedMotion()) return;
+
+      const count = getSkillButtons().length;
+      if (!count) return;
+
+      const nextIndex = getSkillIndexFromScroll(count);
+      if (nextIndex === activeSkillIndex) return;
+
+      const button = getSkillButtons()[nextIndex];
+      if (button) updateSkillTip(button);
+    };
+
+    const onScroll = () => {
+      if (skillScrollRaf) return;
+      skillScrollRaf = window.requestAnimationFrame(() => {
+        skillScrollRaf = 0;
+        syncFromScroll();
+      });
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", syncFromScroll);
+    syncFromScroll();
   };
 
   const closeProjectModal = () => {
@@ -204,26 +318,17 @@
   };
 
   const initSkillTips = () => {
-    if (!skillsSection || !skillsTip) return;
+    if (!skillsSection || !skillsPanel) return;
 
     skillsSection.addEventListener("click", (event) => {
       const button = event.target.closest(".skills_item");
 
       if (!button) return;
 
-      event.stopPropagation();
+      const index = getSkillButtons().indexOf(button);
+      if (index < 0) return;
 
-      if (activeSkillName === button.dataset.skillName) {
-        hideSkillTip();
-        return;
-      }
-
-      updateSkillTip(button);
-    });
-
-    document.addEventListener("click", (event) => {
-      if (skillsSection?.contains(event.target)) return;
-      hideSkillTip();
+      selectSkillByIndex(index, { syncScroll: true });
     });
   };
 
@@ -245,9 +350,8 @@
     projectModalBackdrop?.addEventListener("click", closeProjectModal);
 
     document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") {
-        hideSkillTip();
-        if (!projectModal.hidden) closeProjectModal();
+      if (event.key === "Escape" && !projectModal.hidden) {
+        closeProjectModal();
       }
     });
   };
@@ -255,5 +359,6 @@
   renderSkills();
   renderWorks();
   initSkillTips();
+  initSkillScrollPin();
   initProjectModal();
 })();
