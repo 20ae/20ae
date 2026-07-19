@@ -22,7 +22,7 @@
 
   const createPlaceholder = (title) => {
     const encodedTitle = encodeURIComponent(title);
-    return `https://placehold.co/900x560/efe8db/6a4e3a?text=${encodedTitle}`;
+    return `https://placehold.co/900x560/e8e6df/b93d3d?text=${encodedTitle}`;
   };
 
   const toClassName = (value) => {
@@ -46,11 +46,19 @@
 
     skillsTip.hidden = true;
     activeSkillName = null;
+    skillsSection?.querySelectorAll(".skills_item.is-active").forEach((item) => {
+      item.classList.remove("is-active");
+    });
   };
 
   const updateSkillTip = (button) => {
     if (!skillsTip || !skillsTipName || !skillsTipDesc) return;
 
+    skillsSection?.querySelectorAll(".skills_item.is-active").forEach((item) => {
+      item.classList.remove("is-active");
+    });
+
+    button.classList.add("is-active");
     skillsTipName.textContent = button.dataset.skillName;
     skillsTipDesc.textContent = button.dataset.skillDesc;
     skillsTip.hidden = false;
@@ -62,45 +70,33 @@
       skill.iconType === "image"
         ? `<img src="${escapeAttr(skill.icon)}" alt="" class="skills_icon">`
         : `<i class="${escapeAttr(skill.icon)}" aria-hidden="true"></i>`;
-
     return `
-      <button
-        type="button"
-        class="skills_item skills_item_${toClassName(skill.name)}"
-        data-skill-name="${escapeAttr(skill.name)}"
-        data-skill-desc="${escapeAttr(skill.description)}"
-        aria-label="${escapeAttr(skill.name)} 설명 보기"
-      >${iconHtml}</button>
+      <li>
+        <button
+          type="button"
+          class="skills_item skills_item_${toClassName(skill.name)}"
+          data-skill-name="${escapeAttr(skill.name)}"
+          data-skill-desc="${escapeAttr(skill.description)}"
+          aria-label="${escapeAttr(skill.name)} 설명 보기"
+        >
+          <span class="skills_item_icon">${iconHtml}</span>
+          <span class="skills_item_name">${escapeAttr(skill.name)}</span>
+        </button>
+      </li>
     `;
-  };
-
-  const buildSkillGroupHtml = () => {
-    const itemWidth = 120;
-    const minWidth = Math.max(window.innerWidth, 960);
-    let items = [];
-
-    while (items.length * itemWidth < minWidth) {
-      items = items.concat(data.skills);
-    }
-
-    return items.map(createSkillItem).join("");
   };
 
   const renderSkills = () => {
-    const track = document.querySelector(".skills_track");
+    const grid = document.querySelector(".skills_grid");
 
-    if (!track) {
+    if (!grid) {
       return;
     }
 
-    const groupHtml = buildSkillGroupHtml();
-    track.innerHTML = `
-      <div class="skills_group">${groupHtml}</div>
-      <div class="skills_group" aria-hidden="true">${groupHtml}</div>
-    `;
+    grid.innerHTML = data.skills.map(createSkillItem).join("");
 
     if (activeSkillName) {
-      const activeButton = track.querySelector(`.skills_item[data-skill-name="${CSS.escape(activeSkillName)}"]`);
+      const activeButton = grid.querySelector(`.skills_item[data-skill-name="${CSS.escape(activeSkillName)}"]`);
       if (activeButton) {
         updateSkillTip(activeButton);
       }
@@ -260,10 +256,4 @@
   renderWorks();
   initSkillTips();
   initProjectModal();
-
-  let resizeTimer;
-  window.addEventListener("resize", () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(renderSkills, 200);
-  });
 })();

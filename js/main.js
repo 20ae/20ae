@@ -5,9 +5,9 @@
   const siteLogoLink = document.querySelector(".site-logo a");
   const returnTop = document.querySelector(".return-top");
   const scrollProgress = document.querySelector(".header-progress");
-  const heroOrbs = document.querySelectorAll(".hero_orb");
   const heroRevealTexts = document.querySelectorAll(".hero_reveal_text");
   const aboutSection = document.querySelector("#about");
+  const skillSection = document.querySelector("#skill");
   const projectSection = document.querySelector("#project");
   const contactSection = document.querySelector("#contact");
   const aboutRevealTargets = [
@@ -18,6 +18,10 @@
   ].filter(Boolean);
   const profileTimeline = document.querySelector(".profile-timeline");
   const timelinePanels = profileTimeline?.querySelectorAll(".timeline") || [];
+  const skillRevealTargets = [
+    document.querySelector("#skill .section-heading"),
+    document.querySelector(".skills_grid"),
+  ].filter(Boolean);
   const projectRevealTargets = [
     document.querySelector("#project .section-heading"),
     document.querySelector(".works_grid"),
@@ -148,6 +152,18 @@
     threshold: 0.28,
   });
 
+  const skillReveal = createRevealController(
+    document.querySelector("#skill .section-heading") || skillSection,
+    skillRevealTargets,
+    {
+      fromY: -40,
+      duration: 0.75,
+      stagger: 0.14,
+      threshold: 0.08,
+      rootMargin: "0px 0px 16% 0px",
+    }
+  );
+
   const projectReveal = createRevealController(
     document.querySelector("#project .section-heading") || projectSection,
     projectRevealTargets,
@@ -177,6 +193,11 @@
       if (hash === "#about") {
         aboutReveal.play();
         timelineReveal.play();
+        return;
+      }
+
+      if (hash === "#skill") {
+        skillReveal.play();
         return;
       }
 
@@ -218,22 +239,6 @@
     });
   };
 
-  const initAnimations = () => {
-    if (!window.gsap || !heroOrbs.length) return;
-
-    heroOrbs.forEach((orb, index) => {
-      window.gsap.to(orb, {
-        x: index % 2 === 0 ? 80 : -80,
-        y: index % 2 === 0 ? -50 : 50,
-        rotation: index % 2 === 0 ? 60 : -60,
-        duration: 7 + index,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
-    });
-  };
-
   const resetScrollPosition = () => {
     if (history.scrollRestoration) {
       history.scrollRestoration = "manual";
@@ -254,10 +259,10 @@
   updateScrollState();
   initMenu();
   initReturnTop();
-  initAnimations();
   playHeroIntro();
   aboutReveal.observe();
   timelineReveal.observe();
+  skillReveal.observe();
   projectReveal.observe();
   contactReveal.observe();
 })();

@@ -4,49 +4,57 @@ window.PORTFOLIO_DATA = {
       name: "React",
       icon: "images/icon/react.png",
       iconType: "image",
-      description: "React 기반 UI 컴포넌트를 개발하고 상태 관리를 활용할 수 있습니다.",
+      description:
+        "컴포넌트 기반 UI를 설계하고, props와 state를 활용해 재사용 가능한 인터페이스를 구현합니다. useEffect, 조건부 렌더링, 리스트 렌더링을 통해 동적 화면과 사용자 인터랙션을 구성할 수 있습니다.",
     },
     {
       name: "HTML5",
       icon: "images/icon/html5.png",
       iconType: "image",
-      description: "기본적인 HTML 태그를 사용할 수 있습니다.",
+      description:
+        "시맨틱 태그를 활용해 문서 구조를 명확하게 설계하고, 웹 표준에 맞는 마크업을 작성합니다. form, media, accessibility 속성을 고려해 접근성과 유지보수성을 높인 HTML 구조를 구현할 수 있습니다.",
     },
     {
       name: "CSS3",
       icon: "images/icon/css3.png",
       iconType: "image",
-      description: "반응형 레이아웃과 스타일링을 구현할 수 있습니다.",
+      description:
+        "Flexbox와 Grid를 활용해 반응형 레이아웃을 구성하고, 미디어 쿼리로 디바이스별 UI를 대응합니다. transition, transform, 커스텀 속성을 활용해 인터랙션과 일관된 디자인 시스템을 구현할 수 있습니다.",
     },
     {
       name: "JavaScript",
       icon: "fa-brands fa-js",
       iconType: "font",
-      description: "DOM 조작과 인터랙션을 구현할 수 있습니다.",
+      description:
+        "DOM 조작과 이벤트 핸들링을 통해 사용자 동작에 반응하는 인터랙션을 구현합니다. 비동기 처리, 배열/객체 데이터 가공, 모듈 구조를 활용해 동적인 웹 기능을 효과적으로 작성할 수 있습니다.",
     },
     {
       name: "TypeScript",
       icon: "images/icon/typeScript.png",
       iconType: "image",
-      description: "타입 기반으로 안정적인 코드를 작성할 수 있습니다.",
+      description:
+        "인터페이스와 타입 정의를 통해 데이터 구조를 명확히 하고, 런타임 오류를 사전에 줄입니다. 컴포넌트 props와 함수 인자에 타입을 적용해 협업과 유지보수에 유리한 코드를 작성할 수 있습니다.",
     },
     {
       name: "Illustrator",
       icon: "images/icon/ai.png",
       iconType: "image",
-      description: "간단한 그래픽 리소스를 제작할 수 있습니다.",
+      description:
+        "벡터 기반으로 아이콘, 로고, UI 그래픽 리소스를 제작하고 편집합니다. 웹 작업에 필요한 에셋을 SVG/PNG로 내보내 퍼블리싱과 프론트엔드 작업에 바로 활용할 수 있습니다.",
     },
     {
       name: "GitHub",
       icon: "fa-brands fa-github",
       iconType: "font",
-      description: "Git/GitHub를 활용한 버전 관리가 가능합니다.",
+      description:
+        "Git을 활용해 커밋, 브랜치, 병합 흐름을 관리하고 GitHub로 원격 저장소를 운영합니다. Pull Request와 이슈 기반으로 협업하며 변경 이력을 체계적으로 관리할 수 있습니다.",
     },
     {
       name: "SVN",
       icon: "fa-solid fa-code-branch",
       iconType: "font",
-      description: "SVN을 활용한 협업 및 버전 관리가 가능합니다.",
+      description:
+        "SVN을 활용해 중앙 저장소 기반의 버전 관리와 협업을 진행합니다. checkout, update, commit 흐름을 통해 팀 단위 프로젝트의 소스 동기화와 변경 이력 관리가 가능합니다.",
     },
   ],
   works: [
