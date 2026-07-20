@@ -110,17 +110,11 @@ body.is-menu-open {
   font-size: 15px;
   font-weight: 700;
   letter-spacing: -0.01em;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
 .button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 22px rgba(185, 61, 61, 0.22);
-  filter: brightness(1.04);
-}
-
-.button:active {
-  transform: translateY(0);
+  background: var(--color-accent);
 }
 
 .button:focus-visible {

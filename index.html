@@ -102,7 +102,7 @@
               <div class="about_text">
                 <h2>Youngae Lee</h2>
                 <p>
-                  <strong>디자인 의도를 정확하게 구현</strong>하고, 사용자 경험을 고려한 웹을 만드는 프론트엔드 개발자입니다.
+                  <strong>디자인 의도를 정확하게 구현</strong>하고, 사용자 경험을 고려한 웹을 만드는 웹 퍼블리셔입니다.
                 </p>
                 <p>
                   <strong>HTML, CSS, JavaScript</strong>를 기반으로 <strong>반응형 웹과 인터랙션</strong>을 구현하며, <strong>웹 표준과 접근성</strong>을 고려한 UI를 개발합니다.
@@ -194,23 +194,50 @@
           </div>
         </section>
 
-        <div class="project-modal" hidden>
-          <div class="project-modal_backdrop"></div>
-          <div class="project-modal_dialog" role="dialog" aria-modal="true" aria-labelledby="project-modal-title">
-            <div class="project-modal_header">
-              <h3 id="project-modal-title" class="project-modal_title"></h3>
-              <div class="project-modal_actions">
-                <a class="project-modal_open" href="#" target="_blank" rel="noreferrer">상세 설명</a>
-                <button class="project-modal_close" type="button" aria-label="닫기">
-                  <i class="fa-solid fa-xmark" aria-hidden="true"></i>
-                </button>
+        <div class="project-detail" hidden>
+          <div class="container project-detail_inner">
+            <div class="project-detail_top">
+              <p class="section-label project-detail_label">PROJECT</p>
+              <button class="project-detail_close" type="button" aria-label="닫기">
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="project-detail_layout">
+              <div class="project-detail_content">
+                <p class="project-detail_category"></p>
+                <h2 class="project-detail_title"></h2>
+                <p class="project-detail_desc"></p>
+                <div class="project-detail_actions"></div>
+                <div class="project-detail_index">
+                  <span class="project-detail_number"></span>
+                </div>
+              </div>
+              <div class="project-detail_visual">
+                <figure class="project-detail_figure">
+                  <img class="project-detail_image" src="" alt="">
+                </figure>
               </div>
             </div>
-            <div class="project-modal_body">
-              <iframe class="project-modal_frame" title="프로젝트 상세" loading="lazy"></iframe>
-              <div class="project-modal_fallback">
-                <p>Notion 페이지는 보안 정책상 미리보기가 제한될 수 있습니다.</p>
-                <a class="button project-modal_fallback_link" href="#" target="_blank" rel="noreferrer">Notion에서 자세히 보기</a>
+            <div class="project-detail_meta">
+              <section class="project-detail_block project-detail_block_roles">
+                <h3 class="project-detail_block_title">담당 역할</h3>
+                <ul class="project-detail_roles"></ul>
+              </section>
+              <section class="project-detail_block project-detail_block_tech">
+                <h3 class="project-detail_block_title">Tech Stack</h3>
+                <ul class="project-detail_tech"></ul>
+              </section>
+              <section class="project-detail_block project-detail_block_features">
+                <h3 class="project-detail_block_title">주요 기능</h3>
+                <ul class="project-detail_features"></ul>
+              </section>
+            </div>
+            <div class="project-detail_play" hidden>
+              <div class="project-detail_play_iframe_wrap" hidden>
+                <iframe class="project-detail_play_frame" title="프로젝트 실행 미리보기" loading="lazy"></iframe>
+              </div>
+              <div class="project-detail_play_video_wrap" hidden>
+                <video class="project-detail_play_video" muted playsinline></video>
               </div>
             </div>
           </div>

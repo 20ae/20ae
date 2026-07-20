@@ -10,21 +10,39 @@
   const skillsTipName = document.querySelector(".skills_tip_name");
   const skillsTipDesc = document.querySelector(".skills_tip_desc");
   const skillPinTrack = document.querySelector(".skill-pin_track");
-  const projectModal = document.querySelector(".project-modal");
-  const projectModalTitle = document.querySelector(".project-modal_title");
-  const projectModalFrame = document.querySelector(".project-modal_frame");
-  const projectModalOpen = document.querySelector(".project-modal_open");
-  const projectModalFallbackLink = document.querySelector(".project-modal_fallback_link");
-  const projectModalClose = document.querySelector(".project-modal_close");
-  const projectModalBackdrop = document.querySelector(".project-modal_backdrop");
-  const MODAL_FALLBACK_DELAY_MS = 1600;
+  const projectDetail = document.querySelector(".project-detail");
+  const projectDetailCategory = document.querySelector(".project-detail_category");
+  const projectDetailTitle = document.querySelector(".project-detail_title");
+  const projectDetailDesc = document.querySelector(".project-detail_desc");
+  const projectDetailActions = document.querySelector(".project-detail_actions");
+  const projectDetailNumber = document.querySelector(".project-detail_number");
+  const projectDetailImage = document.querySelector(".project-detail_image");
+  const projectDetailClose = document.querySelector(".project-detail_close");
+  const projectDetailRoles = document.querySelector(".project-detail_roles");
+  const projectDetailTech = document.querySelector(".project-detail_tech");
+  const projectDetailFeatures = document.querySelector(".project-detail_features");
+  const projectDetailBlockRoles = document.querySelector(".project-detail_block_roles");
+  const projectDetailBlockTech = document.querySelector(".project-detail_block_tech");
+  const projectDetailBlockFeatures = document.querySelector(".project-detail_block_features");
+  const projectDetailPlay = document.querySelector(".project-detail_play");
+  const projectDetailPlayIframeWrap = document.querySelector(".project-detail_play_iframe_wrap");
+  const projectDetailPlayVideoWrap = document.querySelector(".project-detail_play_video_wrap");
+  const projectDetailPlayFrame = document.querySelector(".project-detail_play_frame");
+  const projectDetailPlayVideo = document.querySelector(".project-detail_play_video");
   let activeSkillName = null;
   let activeSkillIndex = -1;
-  let modalFallbackTimer = null;
   let skillScrollLock = false;
   let skillScrollLockTimer = null;
   let skillPanelAnimTimer = null;
   let skillScrollRaf = 0;
+  let playVideoUrls = [];
+  let playVideoIndex = 0;
+  let playVideoEndedHandler = null;
+  let isProjectDetailOpen = false;
+  let skipDetailHashSync = false;
+
+  const PROJECT_LIST_HASH = "#project";
+  const PROJECT_DETAIL_HASH_RE = /^#project\/(\d+)$/;
 
   const createPlaceholder = (title) => {
     const encodedTitle = encodeURIComponent(title);
@@ -41,10 +59,6 @@
       .replace(/"/g, "&quot;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;");
-  };
-
-  const isNotionUrl = (url) => {
-    return /notion\.(com|so)/i.test(url);
   };
 
   const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -217,69 +231,268 @@
     syncFromScroll();
   };
 
-  const closeProjectModal = () => {
-    if (!projectModal) return;
+  const getProjectDetailIndexFromHash = (hash = location.hash) => {
+    const match = hash.match(PROJECT_DETAIL_HASH_RE);
+    if (!match) return null;
 
-    clearTimeout(modalFallbackTimer);
-    projectModal.hidden = true;
-    projectModal.classList.remove("is-fallback");
-    document.body.classList.remove("is-modal-open");
-
-    if (projectModalFrame) {
-      projectModalFrame.removeAttribute("src");
-    }
+    const index = Number(match[1]) - 1;
+    return Number.isInteger(index) && index >= 0 && index < data.works.length ? index : null;
   };
 
-  const openProjectModal = (title, embedUrl, detailUrl) => {
-    if (!projectModal || !projectModalTitle || !projectModalFrame) return;
+  const getProjectDetailHash = (index) => `#project/${index + 1}`;
 
-    projectModalTitle.textContent = title;
-    projectModal.classList.remove("is-fallback");
+  const hideProjectDetail = () => {
+    if (!projectDetail) return;
 
-    if (projectModalOpen) projectModalOpen.href = detailUrl;
-    if (projectModalFallbackLink) projectModalFallbackLink.href = detailUrl;
-
-    projectModal.hidden = false;
-    document.body.classList.add("is-modal-open");
-    projectModalFrame.src = embedUrl;
-
-    clearTimeout(modalFallbackTimer);
-    if (isNotionUrl(embedUrl)) {
-      modalFallbackTimer = setTimeout(() => {
-        projectModal.classList.add("is-fallback");
-      }, MODAL_FALLBACK_DELAY_MS);
-    }
-
-    projectModalClose?.focus();
+    projectDetail.hidden = true;
+    document.body.classList.remove("is-detail-open");
+    stopDetailPlayMedia();
+    isProjectDetailOpen = false;
   };
 
-  const renderWorkCard = (work) => {
+  const showProjectDetail = (work, index) => {
+    if (!projectDetail || !projectDetailTitle || !projectDetailDesc || !projectDetailImage) return;
+
     const placeholder = createPlaceholder(work.title);
 
-    if (work.openInModal) {
-      return `
-        <li class="work-card">
-          <a
-            href="${escapeAttr(work.embedUrl)}"
-            data-project-embed-url="${escapeAttr(work.embedUrl)}"
-            data-project-detail-url="${escapeAttr(work.detailUrl)}"
-            data-project-title="${escapeAttr(work.title)}"
-          >
-            <figure class="work-card_thumb">
-              <img src="${escapeAttr(work.image)}" alt="${escapeAttr(work.alt)}" data-fallback-src="${escapeAttr(placeholder)}">
-            </figure>
-            <div class="work-card_body">
-              <h3>${work.title}</h3>
-              <p>${work.category}</p>
-            </div>
-          </a>
-        </li>
-      `;
+    if (projectDetailCategory) {
+      projectDetailCategory.textContent = work.category;
     }
+
+    projectDetailTitle.textContent = work.title;
+    projectDetailDesc.textContent = work.description || work.category;
+
+    if (projectDetailNumber) {
+      projectDetailNumber.textContent = formatProjectNumber(index);
+    }
+
+    projectDetailImage.src = work.image;
+    projectDetailImage.alt = work.alt;
+    projectDetailImage.dataset.fallbackSrc = placeholder;
+
+    renderDetailActions(work);
+    renderDetailMeta(work);
+
+    projectDetail.hidden = false;
+    projectDetail.scrollTop = 0;
+    document.body.classList.add("is-detail-open");
+    isProjectDetailOpen = true;
+    projectDetailClose?.focus();
+  };
+
+  const closeProjectDetail = () => {
+    if (!isProjectDetailOpen) return;
+
+    if (PROJECT_DETAIL_HASH_RE.test(location.hash)) {
+      history.back();
+      return;
+    }
+
+    hideProjectDetail();
+
+    if (location.hash !== PROJECT_LIST_HASH) {
+      skipDetailHashSync = true;
+      history.replaceState(null, "", PROJECT_LIST_HASH);
+      skipDetailHashSync = false;
+    }
+  };
+
+  const openProjectDetail = (work, index) => {
+    showProjectDetail(work, index);
+
+    const detailHash = getProjectDetailHash(index);
+
+    if (location.hash === detailHash) return;
+
+    if (location.hash !== PROJECT_LIST_HASH) {
+      history.pushState({ portfolioView: "project-list" }, "", PROJECT_LIST_HASH);
+    }
+
+    history.pushState({ portfolioView: "project-detail", workIndex: index }, "", detailHash);
+  };
+
+  const syncProjectDetailFromLocation = () => {
+    if (skipDetailHashSync) return;
+
+    const detailIndex = getProjectDetailIndexFromHash();
+
+    if (detailIndex != null) {
+      const work = data.works[detailIndex];
+      if (!work) return;
+      showProjectDetail(work, detailIndex);
+      return;
+    }
+
+    if (isProjectDetailOpen) {
+      hideProjectDetail();
+    }
+  };
+
+  const stopDetailPlayMedia = () => {
+    if (projectDetailPlayFrame) {
+      projectDetailPlayFrame.removeAttribute("src");
+    }
+
+    if (projectDetailPlayIframeWrap) {
+      projectDetailPlayIframeWrap.hidden = true;
+    }
+
+    if (projectDetailPlayVideo) {
+      if (playVideoEndedHandler) {
+        projectDetailPlayVideo.removeEventListener("ended", playVideoEndedHandler);
+        playVideoEndedHandler = null;
+      }
+
+      projectDetailPlayVideo.pause();
+      projectDetailPlayVideo.removeAttribute("src");
+      projectDetailPlayVideo.load();
+      projectDetailPlayVideo.loop = false;
+    }
+
+    if (projectDetailPlayVideoWrap) {
+      projectDetailPlayVideoWrap.hidden = true;
+    }
+
+    playVideoUrls = [];
+    playVideoIndex = 0;
+
+    if (projectDetailPlay) {
+      projectDetailPlay.hidden = true;
+    }
+  };
+
+  const playDetailVideoAt = (index) => {
+    if (!projectDetailPlayVideo || !playVideoUrls.length) return;
+
+    playVideoIndex = ((index % playVideoUrls.length) + playVideoUrls.length) % playVideoUrls.length;
+    projectDetailPlayVideo.src = playVideoUrls[playVideoIndex];
+    projectDetailPlayVideo.play().catch(() => {});
+  };
+
+  const startDetailVideoPlaylist = (urls) => {
+    if (!projectDetailPlayVideo || !projectDetailPlayVideoWrap || !urls.length) return;
+
+    playVideoUrls = urls;
+    playVideoIndex = 0;
+    projectDetailPlayVideoWrap.hidden = false;
+    projectDetailPlayVideo.muted = true;
+    projectDetailPlayVideo.playsInline = true;
+    projectDetailPlayVideo.loop = urls.length === 1;
+
+    if (playVideoEndedHandler) {
+      projectDetailPlayVideo.removeEventListener("ended", playVideoEndedHandler);
+    }
+
+    if (urls.length > 1) {
+      playVideoEndedHandler = () => {
+        playDetailVideoAt(playVideoIndex + 1);
+      };
+      projectDetailPlayVideo.addEventListener("ended", playVideoEndedHandler);
+    } else {
+      playVideoEndedHandler = null;
+    }
+
+    playDetailVideoAt(0);
+  };
+
+  const renderDetailPlay = (work) => {
+    stopDetailPlayMedia();
+
+    if (!projectDetailPlay) return;
+
+    if (work.previewUrl && projectDetailPlayFrame && projectDetailPlayIframeWrap) {
+      projectDetailPlay.hidden = false;
+      projectDetailPlayIframeWrap.hidden = false;
+      projectDetailPlayFrame.src = work.previewUrl;
+      return;
+    }
+
+    if (work.videoUrls?.length) {
+      projectDetailPlay.hidden = false;
+      startDetailVideoPlaylist(work.videoUrls);
+    }
+  };
+
+  const formatProjectNumber = (index) => {
+    return String(index + 1).padStart(2, "0");
+  };
+
+  const createDetailActionLink = (label, className, href) => {
+    const link = document.createElement("a");
+    link.className = `project-detail_action ${className}`;
+    link.href = href;
+    link.target = "_blank";
+    link.rel = "noreferrer";
+    link.textContent = label;
+    return link;
+  };
+
+  const renderDetailActions = (work) => {
+    if (!projectDetailActions) return;
+
+    projectDetailActions.replaceChildren();
+
+    if (work.visitUrl) {
+      projectDetailActions.appendChild(
+        createDetailActionLink("사이트 방문", "project-detail_action_visit", work.visitUrl)
+      );
+    }
+
+    if (work.detailUrl) {
+      projectDetailActions.appendChild(
+        createDetailActionLink("상세 설명", "project-detail_action_detail", work.detailUrl)
+      );
+    }
+  };
+
+  const renderListItems = (listEl, items, itemClassName) => {
+    if (!listEl) return;
+
+    listEl.replaceChildren();
+
+    (items || []).forEach((item) => {
+      const li = document.createElement("li");
+      if (itemClassName) li.className = itemClassName;
+      li.textContent = item;
+      listEl.appendChild(li);
+    });
+  };
+
+  const renderDetailMeta = (work) => {
+    const roles = work.roles || [];
+    const tech = work.tech || [];
+    const features = work.features || [];
+
+    renderListItems(projectDetailRoles, roles);
+    renderListItems(projectDetailTech, tech, "project-detail_tech_item");
+    renderListItems(projectDetailFeatures, features);
+
+    if (projectDetailBlockRoles) {
+      projectDetailBlockRoles.hidden = roles.length === 0;
+    }
+
+    if (projectDetailBlockTech) {
+      projectDetailBlockTech.hidden = tech.length === 0;
+    }
+
+    if (projectDetailBlockFeatures) {
+      projectDetailBlockFeatures.hidden = features.length === 0;
+    }
+
+    renderDetailPlay(work);
+  };
+
+  const renderWorkCard = (work, index) => {
+    const placeholder = createPlaceholder(work.title);
 
     return `
       <li class="work-card">
-        <a href="${escapeAttr(work.url)}" target="_blank" rel="noreferrer">
+        <button
+          type="button"
+          class="work-card_trigger"
+          data-work-index="${index}"
+          aria-label="${escapeAttr(work.title)} 상세 보기"
+        >
           <figure class="work-card_thumb">
             <img src="${escapeAttr(work.image)}" alt="${escapeAttr(work.alt)}" data-fallback-src="${escapeAttr(placeholder)}">
           </figure>
@@ -287,7 +500,7 @@
             <h3>${work.title}</h3>
             <p>${work.category}</p>
           </div>
-        </a>
+        </button>
       </li>
     `;
   };
@@ -315,6 +528,7 @@
 
     list.innerHTML = data.works.map(renderWorkCard).join("");
     attachImageFallbacks(list);
+    attachImageFallbacks(projectDetail || document);
   };
 
   const initSkillTips = () => {
@@ -332,26 +546,38 @@
     });
   };
 
-  const initProjectModal = () => {
+  const initProjectDetail = () => {
     const list = document.querySelector(".works_grid");
 
-    if (!list || !projectModal) return;
+    if (!list || !projectDetail) return;
 
     list.addEventListener("click", (event) => {
-      const link = event.target.closest("a[data-project-embed-url]");
+      const trigger = event.target.closest("[data-work-index]");
 
-      if (!link) return;
+      if (!trigger) return;
 
-      event.preventDefault();
-      openProjectModal(link.dataset.projectTitle, link.dataset.projectEmbedUrl, link.dataset.projectDetailUrl);
+      const index = Number(trigger.dataset.workIndex);
+      const work = data.works[index];
+
+      if (!work) return;
+
+      openProjectDetail(work, index);
     });
 
-    projectModalClose?.addEventListener("click", closeProjectModal);
-    projectModalBackdrop?.addEventListener("click", closeProjectModal);
+    projectDetailClose?.addEventListener("click", closeProjectDetail);
+
+    projectDetailImage?.addEventListener("error", () => {
+      if (projectDetailImage.dataset.fallbackSrc) {
+        projectDetailImage.src = projectDetailImage.dataset.fallbackSrc;
+      }
+    });
+
+    window.addEventListener("popstate", syncProjectDetailFromLocation);
+    syncProjectDetailFromLocation();
 
     document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && !projectModal.hidden) {
-        closeProjectModal();
+      if (event.key === "Escape" && projectDetail && !projectDetail.hidden) {
+        closeProjectDetail();
       }
     });
   };
@@ -360,5 +586,5 @@
   renderWorks();
   initSkillTips();
   initSkillScrollPin();
-  initProjectModal();
+  initProjectDetail();
 })();
