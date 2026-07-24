@@ -1,4 +1,4 @@
-window.PORTFOLIO_DATA = {
+export const PORTFOLIO_DATA = {
   skills: [
     {
       name: "React",

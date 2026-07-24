@@ -8,6 +8,7 @@
   --color-primary: #b93d3d;
   --color-primary-soft: rgba(185, 61, 61, 0.1);
   --color-accent: #8a3a36;
+  --color-secondary: #4a5348;
   --font-main: "Pretendard", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-display: "Inter", "Inter Local", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-logo: var(--font-display);
@@ -69,7 +70,7 @@ body.is-menu-open {
 
 .section {
   position: relative;
-  padding: 100px 0;
+  padding: 100px 0 0;
 }
 
 .section-heading {
@@ -103,18 +104,16 @@ body.is-menu-open {
   justify-content: center;
   min-height: 46px;
   padding: 0 22px;
+  border: 1px solid transparent;
   border-radius: 0;
-  background: var(--color-primary);
-  color: #fff;
+  background: transparent;
+  color: inherit;
   font-family: var(--font-main);
   font-size: 15px;
   font-weight: 700;
-  letter-spacing: -0.01em;
-  transition: background 0.2s ease, color 0.2s ease;
-}
-
-.button:hover {
-  background: var(--color-accent);
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 .button:focus-visible {
@@ -122,22 +121,53 @@ body.is-menu-open {
   outline-offset: 2px;
 }
 
+.button--primary {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.button--primary:hover {
+  background: var(--color-accent);
+}
+
+.button--secondary {
+  border-color: var(--color-line);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.button--secondary:hover {
+  border-color: rgba(185, 61, 61, 0.45);
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.button--icon {
+  width: 48px;
+  height: 48px;
+  min-height: 0;
+  padding: 0;
+  border-color: var(--color-line);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 18px;
+}
+
+.button--icon:hover {
+  border-color: rgba(185, 61, 61, 0.45);
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
 .return-top {
   position: fixed;
   right: 24px;
   bottom: 24px;
   z-index: 40;
-  display: grid;
-  width: 48px;
-  height: 48px;
-  place-items: center;
-  border: 1px solid var(--color-line);
-  border-radius: 0;
   background: rgba(250, 249, 246, 0.9);
-  color: var(--color-text);
   opacity: 0;
   transform: translateY(12px);
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition: opacity 0.2s ease, transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
   backdrop-filter: blur(16px);
   pointer-events: none;
 }
@@ -154,6 +184,6 @@ body.is-menu-open {
   }
 
   .section {
-    padding: 92px 0;
+    padding: 92px 0 0;
   }
 }
