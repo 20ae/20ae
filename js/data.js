@@ -70,17 +70,18 @@ export const PORTFOLIO_DATA = {
       visitUrl: "https://www.pilgrimscenter.org",
       detailUrl: "https://app.notion.com/p/373633f7caaa80e1aabae925d1cc7689?source=copy_link",
       roles: [
-        "메인 페이지 퍼블리싱",
+        "메인 페이지 프론트엔드+퍼블리싱",
         "React 컴포넌트 개발",
         "반응형 UI 구현",
-        "프론트엔드 유지보수",
       ],
       tech: ["React", "TypeScript", "CSS", "Tailwind CSS", "Git"],
-      features: [
-        "반응형 레이아웃",
-        "글 포스팅 기능",
-        "검색 기능",
-        "로그인/회원가입 기능",
+      implementation: [
+        "React 컴포넌트 기반의 페이지 구조 설계 및 재사용 가능한 UI 구현",
+        "TypeScript로 props와 데이터 타입을 정의해 렌더링 오류 방지",
+        "Tailwind CSS 유틸리티 클래스를 활용한 일관된 스타일 구성",
+        "게시판 글 포스팅·목록 화면 및 검색 기능 UI 구현",
+        "로그인/회원가입 폼 화면과 입력값 유효성 처리 구현",
+        "Git 브랜치 기반의 형상 관리와 코드 리뷰 협업",
       ],
     },
     {
@@ -103,10 +104,13 @@ export const PORTFOLIO_DATA = {
         "콘텐츠 흐름 및 애니메이션 적용",
       ],
       tech: ["HTML5", "CSS3", "JavaScript", "jQuery", "SVN"],
-      features: [
-        "OX 퀴즈 인터랙션",
-        "문제 및 결과 화면 구현",
-        "애니메이션 피드백",
+      implementation: [
+        "JavaScript 이벤트 핸들링을 활용한 OX 퀴즈 인터랙션 구현",
+        "정답·오답 분기 처리와 결과 화면 전환 로직 구현",
+        "CSS keyframes와 transition을 활용한 피드백 애니메이션 구현",
+        "jQuery를 활용한 DOM 조작 및 학습 단계별 화면 제어",
+        "시맨틱 마크업 기반의 문제·결과 화면 퍼블리싱",
+        "SVN을 이용한 소스 버전 관리와 팀 단위 협업",
       ],
     },
     {
@@ -130,11 +134,13 @@ export const PORTFOLIO_DATA = {
         "정답·오답 피드백 구현",
       ],
       tech: ["HTML5", "CSS3", "JavaScript", "jQuery", "SVN"],
-      features: [
-        "OX 퀴즈 인터랙션",
-        "클릭형 퀴즈 구현",
-        "드래그앤드롭 인터랙션",
-        "정답·오답 피드백 UI",
+      implementation: [
+        "JavaScript 이벤트를 활용한 OX·클릭형 퀴즈 인터랙션 구현",
+        "드래그앤드롭 이벤트를 활용한 문제 풀이 인터랙션 구현",
+        "정답 판별 로직과 오답 재시도 흐름 구현",
+        "CSS 애니메이션을 활용한 정답·오답 피드백 UI 구현",
+        "jQuery 기반 DOM 제어로 문제 유형별 화면 전환 처리",
+        "SVN을 이용한 소스 버전 관리",
       ],
     },
     {
@@ -154,11 +160,13 @@ export const PORTFOLIO_DATA = {
         "미디어 콘텐츠 연동",
       ],
       tech: ["HTML5", "CSS3", "JavaScript", "jQuery", "SVN"],
-      features: [
-        "클릭 기반 학습 인터랙션",
-        "정답 확인 및 피드백 UI",
-        "미디어 콘텐츠 재생",
-        "애니메이션 인터랙션",
+      implementation: [
+        "음악·미술·체육·실과 교과별 학습 화면 퍼블리싱",
+        "JavaScript 클릭 이벤트를 활용한 학습 활동 인터랙션 구현",
+        "AUDIO·VIDEO 요소를 활용한 미디어 콘텐츠 재생 기능 구현",
+        "정답 확인 단계와 피드백 UI 구현",
+        "CSS 애니메이션을 활용한 화면 전환 효과 구현",
+        "SVN을 이용한 소스 버전 관리",
       ],
     },
     {
@@ -184,11 +192,13 @@ export const PORTFOLIO_DATA = {
         "애니메이션 효과 적용",
       ],
       tech: ["HTML5", "CSS3", "JavaScript", "jQuery", "SVN"],
-      features: [
-        "퀴즈형 학습 인터랙션",
-        "터치·클릭 이벤트 처리",
-        "애니메이션 기반 피드백",
-        "미디어 콘텐츠 연동",
+      implementation: [
+        "퀴즈형 학습 화면 UI 퍼블리싱",
+        "터치·클릭 이벤트를 함께 처리해 디바이스별 인터랙션 대응",
+        "CSS keyframes를 활용한 애니메이션 기반 학습 화면 구현",
+        "JavaScript로 정답 판별과 단계별 피드백 처리 구현",
+        "미디어 콘텐츠 연동 및 재생 제어 구현",
+        "SVN을 이용한 소스 버전 관리",
       ],
     },
     {
@@ -208,10 +218,12 @@ export const PORTFOLIO_DATA = {
         "미디어 콘텐츠 및 애니메이션 적용",
       ],
       tech: ["HTML5", "CSS3", "JavaScript", "jQuery", "SVN"],
-      features: [
-        "클릭 기반 학습 인터랙션",
-        "미디어 콘텐츠 재생",
-        "애니메이션 인터랙션",
+      implementation: [
+        "활동지 형태의 실과 학습 화면 퍼블리싱",
+        "JavaScript 클릭 이벤트를 활용한 학습 활동 인터랙션 구현",
+        "VIDEO 요소를 활용한 미디어 콘텐츠 재생 구현",
+        "CSS transition·animation을 활용한 화면 전환 효과 구현",
+        "SVN을 이용한 소스 버전 관리",
       ],
     },
     {
@@ -231,10 +243,10 @@ export const PORTFOLIO_DATA = {
         "사용성 중심 유지보수",
       ],
       tech: ["HTML5", "CSS3", "JavaScript", "jQuery", "SVN"],
-      features: [
-        "음악 재생 컨트롤",
-        "가사 표시 영역",
-        "사용성 개선 UI",
+      implementation: [
+        "재생·일시정지 등 음악 재생 컨트롤 UI 개선",
+        "JavaScript로 재생 상태에 따른 컨트롤 UI 처리 구현",
+        "SVN을 이용한 소스 버전 관리",
       ],
     },
   ],

@@ -18,10 +18,10 @@ export function initWorks(data) {
   const projectDetailClose = document.querySelector(".project-detail_close");
   const projectDetailRoles = document.querySelector(".project-detail_roles");
   const projectDetailTech = document.querySelector(".project-detail_tech");
-  const projectDetailFeatures = document.querySelector(".project-detail_features");
+  const projectDetailImpl = document.querySelector(".project-detail_impl");
   const projectDetailBlockRoles = document.querySelector(".project-detail_block_roles");
   const projectDetailBlockTech = document.querySelector(".project-detail_block_tech");
-  const projectDetailBlockFeatures = document.querySelector(".project-detail_block_features");
+  const projectDetailBlockImpl = document.querySelector(".project-detail_block_impl");
   const projectDetailPlay = document.querySelector(".project-detail_play");
   const projectDetailPlayIframeWrap = document.querySelector(".project-detail_play_iframe_wrap");
   const projectDetailPlayVideoWrap = document.querySelector(".project-detail_play_video_wrap");
@@ -163,11 +163,11 @@ export function initWorks(data) {
   const renderDetailMeta = (work) => {
     const roles = work.roles || [];
     const tech = work.tech || [];
-    const features = work.features || [];
+    const implementation = work.implementation || [];
 
     renderListItems(projectDetailRoles, roles);
     renderListItems(projectDetailTech, tech, "project-detail_tech_item");
-    renderListItems(projectDetailFeatures, features);
+    renderListItems(projectDetailImpl, implementation);
 
     if (projectDetailBlockRoles) {
       projectDetailBlockRoles.hidden = roles.length === 0;
@@ -177,8 +177,8 @@ export function initWorks(data) {
       projectDetailBlockTech.hidden = tech.length === 0;
     }
 
-    if (projectDetailBlockFeatures) {
-      projectDetailBlockFeatures.hidden = features.length === 0;
+    if (projectDetailBlockImpl) {
+      projectDetailBlockImpl.hidden = implementation.length === 0;
     }
 
     renderDetailPlay(work);

@@ -7,6 +7,7 @@ export function initSkills(data) {
   const skillsTipName = document.querySelector(".skills_tip_name");
   const skillsTipDesc = document.querySelector(".skills_tip_desc");
   const skillPinTrack = document.querySelector(".skill-pin_track");
+  const skillPinSticky = document.querySelector(".skill-pin_sticky");
 
   let activeSkillName = null;
   let activeSkillIndex = -1;
@@ -64,8 +65,8 @@ export function initSkills(data) {
 
     const trackTop = skillPinTrack.getBoundingClientRect().top + window.scrollY;
     const trackHeight = skillPinTrack.offsetHeight;
-    const viewportHeight = window.innerHeight;
-    const scrollable = Math.max(trackHeight - viewportHeight, 1);
+    const pinHeight = skillPinSticky?.offsetHeight || window.innerHeight;
+    const scrollable = Math.max(trackHeight - pinHeight, 1);
 
     return { trackTop, scrollable };
   };

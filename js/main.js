@@ -231,6 +231,17 @@ const initMenu = () => {
     closeMenu();
     replaySection("#main");
   });
+
+  document.addEventListener("click", (event) => {
+    if (!siteNav?.classList.contains("is-open")) return;
+    if (event.target.closest(".site-nav, .nav-toggle")) return;
+
+    closeMenu();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeMenu();
+  });
 };
 
 const initReturnTop = () => {
