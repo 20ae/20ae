@@ -31,6 +31,9 @@ export function initWorks(data) {
   let playVideoUrls = [];
   let playVideoIndex = 0;
   let playVideoEndedHandler = null;
+  let detailImageTimer = null;
+  let detailImageIndex = 0;
+  let detailImageUrls = [];
   let isProjectDetailOpen = false;
   let skipDetailHashSync = false;
 
@@ -75,9 +78,54 @@ export function initWorks(data) {
     playVideoUrls = [];
     playVideoIndex = 0;
 
+    if (detailImageTimer) {
+      clearInterval(detailImageTimer);
+      detailImageTimer = null;
+      detailImageIndex = 0;
+      detailImageUrls = [];
+    }
+
     if (projectDetailPlay) {
       projectDetailPlay.hidden = true;
     }
+  };
+
+  const startDetailImageRotation = (urls) => {
+    if (!projectDetailImage || !urls || !urls.length) return;
+
+    detailImageUrls = urls.slice();
+    detailImageIndex = 0;
+    projectDetailImage.style.transition = "opacity 1s";
+    projectDetailImage.style.opacity = "1";
+    projectDetailImage.src = detailImageUrls[0];
+
+    if (detailImageTimer) clearInterval(detailImageTimer);
+
+    if (detailImageUrls.length > 1) {
+      detailImageTimer = setInterval(() => {
+        const nextIndex = (detailImageIndex + 1) % detailImageUrls.length;
+        const nextSrc = detailImageUrls[nextIndex];
+
+        projectDetailImage.style.opacity = "0";
+        setTimeout(() => {
+          projectDetailImage.src = nextSrc;
+          projectDetailImage.onload = () => {
+            projectDetailImage.style.opacity = "1";
+          };
+        }, 800);
+
+        detailImageIndex = nextIndex;
+      }, 3000);
+    }
+  };
+
+  const stopDetailImageRotation = () => {
+    if (detailImageTimer) {
+      clearInterval(detailImageTimer);
+      detailImageTimer = null;
+    }
+    detailImageIndex = 0;
+    detailImageUrls = [];
   };
 
   const playDetailVideoAt = (index) => {
@@ -131,6 +179,7 @@ export function initWorks(data) {
       startDetailVideoPlaylist(work.videoUrls);
     }
   };
+
 
   const renderDetailActions = (work) => {
     if (!projectDetailActions) return;
@@ -210,12 +259,20 @@ export function initWorks(data) {
       projectDetailNumber.textContent = formatProjectNumber(index);
     }
 
-    projectDetailImage.src = work.image;
     projectDetailImage.alt = work.alt;
     projectDetailImage.dataset.fallbackSrc = placeholder;
 
     renderDetailActions(work);
     renderDetailMeta(work);
+
+    if (work.detailImages && work.detailImages.length > 0) {
+      startDetailImageRotation(work.detailImages);
+    } else {
+      stopDetailImageRotation();
+      projectDetailImage.style.transition = "";
+      projectDetailImage.style.opacity = "1";
+      projectDetailImage.src = work.image;
+    }
 
     projectDetail.hidden = false;
     projectDetail.setAttribute("aria-hidden", "false");
@@ -279,7 +336,30 @@ export function initWorks(data) {
 
     list.innerHTML = data.works.map(createWorkCard).join("");
     attachImageFallbacks(list);
+    attachHoverThumbnails(list);
     attachImageFallbacks(projectDetail || document);
+  };
+
+  const attachHoverThumbnails = (root) => {
+    if (!root) return;
+
+    root.querySelectorAll(".work-card--hover-thumb").forEach((card) => {
+      const trigger = card.querySelector(".work-card_trigger");
+      if (!trigger) return;
+
+      const applyHover = () => {
+        trigger.classList.add("is-hovered");
+      };
+
+      const removeHover = () => {
+        trigger.classList.remove("is-hovered");
+      };
+
+      trigger.addEventListener("pointerenter", applyHover);
+      trigger.addEventListener("pointerleave", removeHover);
+      trigger.addEventListener("focusin", applyHover);
+      trigger.addEventListener("focusout", removeHover);
+    });
   };
 
   const initProjectDetail = () => {

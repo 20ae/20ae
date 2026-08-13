@@ -227,16 +227,23 @@ export const PORTFOLIO_DATA = {
       ],
     },
     {
-      title: "금성 노래익히기 UI",
-      category: "Web | 퍼블리싱 · 프론트엔드 · UI/UX · 유지보수",
-      image: "images/project/project_music.png",
+      title: "미래엔 · 금성 노래익히기 UI",
+      category: "Web | 퍼블리싱 · UI/UX · 유지보수",
+      cardImage: "images/project/project_miraen.png",
+      hoverImage: "images/project/project_kumsung.png",
+      hoverThumb: true,
+      detailImages: ["images/project/project_miraen.png"],
+      image: "images/project/project_miraen.png",
       alt: "금성 노래익히기 UI 썸네일",
       description:
         "금성출판사 '노래익히기' 학습 UI의 화면 개선과 유지보수를 담당했습니다. 재생 컨트롤, 가사 영역, 학습 단계 표시 등 사용성을 중심으로 인터페이스를 정비했습니다.",
       year: "2024",
       imageCaption: "Music learning interface",
       detailUrl: "https://app.notion.com/p/UI-373633f7caaa80c6a854e7499b2706e9?source=copy_link",
-      videoUrls: ["images/project/mp4/kumsung.mp4"],
+      videoUrls: [
+        "images/project/mp4/miraen.mp4",
+        "images/project/mp4/kumsung.mp4",
+      ],
       roles: [
         "노래익히기 UI 개선",
         "재생 컨트롤 화면 정비",
@@ -246,6 +253,7 @@ export const PORTFOLIO_DATA = {
       implementation: [
         "재생·일시정지 등 음악 재생 컨트롤 UI 개선",
         "JavaScript로 재생 상태에 따른 컨트롤 UI 처리 구현",
+        "DOM 조작을 활용한 페이지 연결 및 동적 화면 전환 구현",
         "SVN을 이용한 소스 버전 관리",
       ],
     },
